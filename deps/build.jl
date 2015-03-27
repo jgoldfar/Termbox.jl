@@ -4,14 +4,17 @@ using BinDeps
 
 libtermbox = library_dependency("libtermbox", aliases=["termbox"])
 
-println(BinDeps.depsdir(libtermbox))
+provides(Sources,
+         URI("https://bitbucket.org/jgoldfar/termbox-jl/downloads/termbox-master.tar.gz"),
+         libtermbox)
+
+# println(BinDeps.depsdir(libtermbox))
 prefix = joinpath(BinDeps.depsdir(libtermbox), "usr")
 srcdir = joinpath(BinDeps.depsdir(libtermbox), "src")
-println("Installing TermBox source to ", srcdir)
+# println("Installing TermBox source to ", srcdir)
 
 provides(SimpleBuild, (@build_steps begin
-                         `rm -rf $srcdir`
-                         `git clone git@github.com:nsf/termbox.git $srcdir`
+                         GetSources(libsilo)
                          CreateDirectory(srcdir)
                          @build_steps begin
                            ChangeDirectory(srcdir)
@@ -19,6 +22,8 @@ provides(SimpleBuild, (@build_steps begin
                            `./waf`
                            `./waf install`
                          end
-                       end), libtermbox, os=:Unix)
+                       end),
+         libtermbox,
+         os = :Unix)
 
 @BinDeps.install [:libtermbox => :libtermbox]
