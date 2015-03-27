@@ -3,6 +3,10 @@
  * These are a safe subset of terminfo keys, which exist on all popular
  * terminals. Termbox uses only them to stay truly portable.
   =#
+export TB_KEY_F1, TB_KEY_F2, TB_KEY_F3, TB_KEY_F4, TB_KEY_F5, TB_KEY_F6, TB_KEY_F7, TB_KEY_F8, TB_KEY_F9, TB_KEY_F10, TB_KEY_F11, TB_KEY_F12
+export TB_KEY_INSERT, TB_KEY_DELETE, TB_KEY_HOME, TB_KEY_END, TB_KEY_PGUP, TB_KEY_PGDN
+export TB_KEY_ARROW_UP, TB_KEY_ARROW_DOWN, TB_KEY_ARROW_LEFT, TB_KEY_ARROW_RIGHT
+export TB_KEY_MOUSE_LEFT, TB_KEY_MOUSE_RIGHT, TB_KEY_MOUSE_MIDDLE
 const TB_KEY_F1 =            (0xFFFF-0)
 const TB_KEY_F2 =            (0xFFFF-1)
 const TB_KEY_F3 =            (0xFFFF-2)
@@ -30,6 +34,7 @@ const TB_KEY_MOUSE_RIGHT =   (0xFFFF-23)
 const TB_KEY_MOUSE_MIDDLE =  (0xFFFF-24)
 
 #=  These are all ASCII code points below SPACE character and a BACKSPACE key.  =#
+export TB_KEY_CTRL_TILDE, TB_KEY_CTRL_2, TB_KEY_CTRL_A, TB_KEY_CTRL_B, TB_KEY_CTRL_C, TB_KEY_CTRL_D, TB_KEY_CTRL_E, TB_KEY_CTRL_F, TB_KEY_CTRL_G, TB_KEY_BACKSPACE, TB_KEY_CTRL_H, TB_KEY_TAB
 const TB_KEY_CTRL_TILDE =        0x00
 const TB_KEY_CTRL_2 =            0x00 #=  clash with 'CTRL_TILDE'  =#
 const TB_KEY_CTRL_A =            0x01
@@ -42,6 +47,7 @@ const TB_KEY_CTRL_G =            0x07
 const TB_KEY_BACKSPACE =         0x08
 const TB_KEY_CTRL_H =            0x08 #=  clash with 'CTRL_BACKSPACE'  =#
 const TB_KEY_TAB =               0x09
+export TB_KEY_CTRL_I, TB_KEY_CTRL_J, TB_KEY_CTRL_K, TB_KEY_CTRL_L, TB_KEY_ENTER, TB_KEY_CTRL_M, TB_KEY_CTRL_N, TB_KEY_CTRL_O, TB_KEY_CTRL_P, TB_KEY_CTRL_Q, TB_KEY_CTRL_R, TB_KEY_CTRL_S, TB_KEY_CTRL_T, TB_KEY_CTRL_U, TB_KEY_CTRL_V, TB_KEY_CTRL_W, TB_KEY_CTRL_X, TB_KEY_CTRL_Y, TB_KEY_CTRL_Z
 const TB_KEY_CTRL_I =            0x09 #=  clash with 'TAB'  =#
 const TB_KEY_CTRL_J =            0x0A
 const TB_KEY_CTRL_K =            0x0B
@@ -61,6 +67,7 @@ const TB_KEY_CTRL_W =            0x17
 const TB_KEY_CTRL_X =            0x18
 const TB_KEY_CTRL_Y =            0x19
 const TB_KEY_CTRL_Z =            0x1A
+export TB_KEY_ESC, TB_KEY_CTRL_LSQ_BRACKET, TB_KEY_CTRL_3, TB_KEY_CTRL_4, TB_KEY_CTRL_BACKSLASH, TB_KEY_CTRL_5, TB_KEY_CTRL_RSQ_BRACKET, TB_KEY_CTRL_6, TB_KEY_CTRL_7, TB_KEY_CTRL_SLASH, TB_KEY_CTRL_UNDERSCORE, TB_KEY_SPACE, TB_KEY_BACKSPACE2, TB_KEY_CTRL_8
 const TB_KEY_ESC =               0x1B
 const TB_KEY_CTRL_LSQ_BRACKET =  0x1B #=  clash with 'ESC'  =#
 const TB_KEY_CTRL_3 =            0x1B #=  clash with 'ESC'  =#
@@ -89,6 +96,7 @@ const TB_KEY_CTRL_8 =            0x7F #=  clash with 'DELETE'  =#
 const TB_MOD_ALT =  0x01
 
 #=  Colors (see struct tb_cell's fg and bg fields).  =#
+export TB_DEFAULT, TB_BLACK, TB_RED, TB_GREEN, TB_YELLOW, TB_BLUE, TB_MAGENTA, TB_CYAN, TB_WHITE
 const TB_DEFAULT =  0x00
 const TB_BLACK =    0x01
 const TB_RED =      0x02
@@ -98,16 +106,27 @@ const TB_BLUE =     0x05
 const TB_MAGENTA =  0x06
 const TB_CYAN =     0x07
 const TB_WHITE =    0x08
-
+export TB_COLORS
+const TB_COLORS = [TB_DEFAULT,
+                   TB_BLACK,
+                   TB_RED,
+                   TB_GREEN,
+                   TB_YELLOW,
+                   TB_BLUE,
+                   TB_MAGENTA,
+                   TB_CYAN,
+                   TB_WHITE
+                   ]
 #=  Attributes, it is possible to use multiple attributes by combining them
  * using bitwise OR ('|'). Although, colors cannot be combined. But you can
  * combine attributes and a single color. See also struct tb_cell's fg and bg
  * fields.
   =#
+export TB_BOLD, TB_UNDERLINE, TB_REVERSE
 const TB_BOLD =       0x0100
 const TB_UNDERLINE =  0x0200
 const TB_REVERSE =    0x0400
-
+const TB_ATTR = [0x0, TB_BOLD, TB_UNDERLINE, TB_REVERSE, TB_BOLD | TB_UNDERLINE]
 #=  A cell, single conceptual entity on the terminal screen. The terminal screen
  * is basically a 2d array of cells. It has the following fields:
  *  - 'ch' is a unicode character
@@ -119,11 +138,14 @@ const TB_REVERSE =    0x0400
 	uint16_t fg;
 	uint16_t bg;
 };=#
+export tb_cell
 type tb_cell
   ch::Cuint
   fg::Cushort
   bg::Cushort
+  tb_cell() = new()
 end
+export TB_EVENT_KEY, TB_EVENT_RESIZE, TB_EVENT_MOUSE
 const TB_EVENT_KEY =     1
 const TB_EVENT_RESIZE =  2
 const TB_EVENT_MOUSE =   3
@@ -143,6 +165,7 @@ const TB_EVENT_MOUSE =   3
   int32_t x;
   int32_t y;
   };=#
+export tb_event
 type tb_event
   etype::Cuchar
   mod::Cuchar
@@ -152,6 +175,7 @@ type tb_event
   h::Cint
   x::Cint
   y::Cint
+  tb_event() = new()
 end
 #=  Error codes returned by tb_init(). All of them are self-explanatory, except
  * the pipe trap error. Termbox uses unix pipes in order to deliver a message
@@ -166,8 +190,9 @@ const TB_EPIPE_TRAP_ERROR =      -3
  * other functions. After successful initialization, the library must be
  * finalized using the tb_shutdown() function.
   =#
-SO_IMPORT int tb_init(void);
-SO_IMPORT void tb_shutdown(void);
+export tb_init, tb_shutdown
+tb_init() = ccall((:tb_init, libtermbox), Cint,(),)
+tb_shutdown() = ccall((:tb_shutdown, libtermbox), Void,(),)
 
 #=  Returns the size of the internal back buffer (which is the same as
  * terminal's window size in characters). The internal buffer can be resized
@@ -175,31 +200,38 @@ SO_IMPORT void tb_shutdown(void);
  * unspecified negative value when called before tb_init() or after
  * tb_shutdown().
   =#
-SO_IMPORT int tb_width(void);
-SO_IMPORT int tb_height(void);
+export tb_width, tb_height
+tb_width() = ccall((:tb_width, libtermbox), Cint,(),)
+tb_height() = ccall((:tb_height, libtermbox), Cint,(),)
 
 #=  Clears the internal back buffer using TB_DEFAULT color or the
  * color/attributes set by tb_set_clear_attributes() function.
   =#
-SO_IMPORT void tb_clear(void);
-SO_IMPORT void tb_set_clear_attributes(uint16_t fg, uint16_t bg);
+export tb_clear, tb_set_clear_attributes
+tb_clear() = ccall((:tb_clear, libtermbox), Void,(),)
+tb_set_clear_attributes(fg, bg) = ccall((:tb_set_clear_attributes, libtermbox), Void,(Cushort, Cushort), fg, bg)
 
 #=  Synchronizes the internal back buffer with the terminal.  =#
-SO_IMPORT void tb_present(void);
+export tb_present
+tb_present() = ccall((:tb_present, libtermbox), Void,(),)
 
+export TB_HIDE_CURSOR
 const TB_HIDE_CURSOR =  -1
 
 #=  Sets the position of the cursor. Upper-left character is (0, 0). If you pass
  * TB_HIDE_CURSOR as both coordinates, then the cursor will be hidden. Cursor
  * is hidden by default.
   =#
-SO_IMPORT void tb_set_cursor(int cx, int cy);
+export tb_set_cursor
+tb_set_cursor(cx, cy) = ccall((:tb_set_cursor, libtermbox), Void,(Cint, Cint), cx, cy)
 
 #=  Changes cell's parameters in the internal back buffer at the specified
  * position.
   =#
-SO_IMPORT void tb_put_cell(int x, int y, const struct tb_cell *cell);
-SO_IMPORT void tb_change_cell(int x, int y, uint32_t ch, uint16_t fg, uint16_t bg);
+export tb_put_cell, tb_change_cell
+tb_put_cell(x, y, cell) = ccall((:tb_put_cell, libtermbox), Void,(Cint, Cint, Ptr{tb_cell}), x, y, cell)
+tb_change_cell(x, y, ch, fg, bg) = ccall((:tb_change_cell, libtermbox), Void,(Cint, Cint, Cuint, Cushort, Cushort), x, y, ch, fg, bg)
+
 
 #=  Copies the buffer from 'cells' at the specified position, assuming the
  * buffer is a two-dimensional array of size ('w' x 'h'), represented as a
@@ -207,15 +239,18 @@ SO_IMPORT void tb_change_cell(int x, int y, uint32_t ch, uint16_t fg, uint16_t b
  *
  * (DEPRECATED: use tb_cell_buffer() instead and copy memory on your own)
   =#
-SO_IMPORT void tb_blit(int x, int y, int w, int h, const struct tb_cell *cells);
+export tb_blit
+tb_blit(x, y, w, h, cell) = ccall((:tb_blit, libtermbox), Void,(Cint, Cint, Cint, Cint, Ptr{tb_cell}), x, y, w, h, cells)
 
 #=  Returns a pointer to internal cell back buffer. You can get its dimensions
  * using tb_width() and tb_height() functions. The pointer stays valid as long
  * as no tb_clear() and tb_present() calls are made. The buffer is
  * one-dimensional buffer containing lines of cells starting from the top.
   =#
-SO_IMPORT struct tb_cell *tb_cell_buffer();
+export tb_cell_buffer
+tb_cell_buffer() = ccall((:tb_cell_buffer, libtermbox), Ptr{tb_cell}, ())
 
+export TB_INPUT_CURRENT, TB_INPUT_ESC, TB_INPUT_ALT, TB_INPUT_MOUSE
 const TB_INPUT_CURRENT =  0 #=  000  =#
 const TB_INPUT_ESC =      1 #=  001  =#
 const TB_INPUT_ALT =      2 #=  010  =#
@@ -231,8 +266,10 @@ const TB_INPUT_MOUSE =    4 #=  100  =#
  *
  * If 'mode' is TB_INPUT_CURRENT, it returns the current input mode.
   =#
-SO_IMPORT int tb_select_input_mode(int mode);
+export tb_select_input_mode
+tb_select_input_mode(mode) = ccall((:tb_select_input_mode, libtermbox), Cint,(Cint,), mode)
 
+export TB_OUTPUT_CURRENT, TB_OUTPUT_NORMAL, TB_OUTPUT_256, TB_OUTPUT_216, TB_OUTPUT_GRAYSCALE
 const TB_OUTPUT_CURRENT =    0
 const TB_OUTPUT_NORMAL =     1
 const TB_OUTPUT_256 =        2
@@ -272,23 +309,29 @@ const TB_OUTPUT_GRAYSCALE =  4
  *
  * If 'mode' is TB_OUTPUT_CURRENT, it returns the current output mode.
   =#
-SO_IMPORT int tb_select_output_mode(int mode);
+export tb_select_output_mode
+tb_select_output_mode(mode) = ccall((:tb_select_output_mode, libtermbox), Cint,(Cint,), mode)
 
 #=  Wait for an event up to 'timeout' milliseconds and fill the 'event'
  * structure with it, when the event is available. Returns the type of the
  * event (one of TB_EVENT_* constants) or -1 if there was an error or 0 in case
  * there were no event during 'timeout' period.
   =#
-SO_IMPORT int tb_peek_event(struct tb_event *event, int timeout);
+export tb_peek_event
+tb_peek_event(event, timeout) = ccall((:tb_peek_event, libtermbox), Cint,(Ptr{tb_event},Cint), &event, timeout)
 
 #=  Wait for an event forever and fill the 'event' structure with it, when the
  * event is available. Returns the type of the event (one of TB_EVENT_*
  * constants) or -1 if there was an error.
   =#
-SO_IMPORT int tb_poll_event(struct tb_event *event);
+export tb_poll_event
+tb_poll_event(event) = ccall((:tb_poll_event, libtermbox), Cint,(Ptr{tb_event},), &event)
 
 #=  Utility utf8 functions.  =#
 const TB_EOF =  -1
-SO_IMPORT int tb_utf8_char_length(char c);
-SO_IMPORT int tb_utf8_char_to_unicode(uint32_t *out, const char *c);
-SO_IMPORT int tb_utf8_unicode_to_char(char *out, uint32_t c);
+tb_utf8_char_length(c) = ccall((:tb_utf8_char_length, libtermbox), Cint,(Cchar,), c)
+# SO_IMPORT int tb_utf8_char_length(char c);
+tb_utf8_char_to_unicode(out, c) = ccall((:tb_utf8_char_to_unicode, libtermbox), Cint,(Ptr{Cuint}, Ptr{Cchar}), out, c)
+# SO_IMPORT int tb_utf8_char_to_unicode(uint32_t *out, const char *c);
+tb_utf8_unicode_to_char(out, c) = ccall((:tb_utf8_unicode_to_char, libtermbox), Cint,(Ptr{Cchar}, Cuint), out, c)
+# SO_IMPORT int tb_utf8_unicode_to_char(char *out, uint32_t c);
