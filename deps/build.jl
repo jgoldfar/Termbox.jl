@@ -10,11 +10,11 @@ provides(Sources,
 
 # println(BinDeps.depsdir(libtermbox))
 prefix = joinpath(BinDeps.depsdir(libtermbox), "usr")
-srcdir = joinpath(BinDeps.depsdir(libtermbox), "src")
+srcdir = joinpath(BinDeps.depsdir(libtermbox), "src", "termbox-master")
 # println("Installing TermBox source to ", srcdir)
 
 provides(SimpleBuild, (@build_steps begin
-                         GetSources(libsilo)
+                         GetSources(libtermbox)
                          CreateDirectory(srcdir)
                          @build_steps begin
                            ChangeDirectory(srcdir)
