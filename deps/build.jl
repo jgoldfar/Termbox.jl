@@ -19,18 +19,6 @@ provides(SimpleBuild, (@build_steps begin
                            `./waf`
                            `./waf install`
                          end
-                       end), libtermbox, os=:Darwin)
-
-provides(SimpleBuild, (@build_steps begin
-                         `rm -rf $srcdir`
-                         `git clone git@github.com:nsf/termbox.git $srcdir`
-                         CreateDirectory(srcdir)
-                         @build_steps begin
-                           ChangeDirectory(srcdir)
-                           `./waf configure --prefix=$prefix`
-                           `./waf`
-                           `./waf install`
-                         end
-                       end), libtermbox, os=:Linux)
+                       end), libtermbox, os=:Unix)
 
 @BinDeps.install [:libtermbox => :libtermbox]
