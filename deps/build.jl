@@ -1,4 +1,5 @@
 using BinDeps
+using Compat
 
 @BinDeps.setup
 
@@ -26,4 +27,4 @@ provides(SimpleBuild, (@build_steps begin
          libtermbox,
          os = :Unix)
 
-@BinDeps.install [:libtermbox => :libtermbox]
+@BinDeps.install @compat Dict(:libtermbox => :libtermbox)
