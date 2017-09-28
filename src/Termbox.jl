@@ -1,4 +1,5 @@
 # Termbox.jl: Wrapper around the Termbox library (https://github.com/nsf/termbox)
+VERSION >= v"0.4.0-dev+6521" && __precompile__()
 module Termbox
 const depsfile = joinpath(dirname(dirname(@__FILE__)), "deps", "deps.jl")
 if isfile(depsfile)
