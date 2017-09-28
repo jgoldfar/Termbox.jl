@@ -1,3 +1,8 @@
+@static if VERSION >= v"0.6-"
+  include("termbox_structs_v0.6.jl")
+else
+  include("termbox_structs_v0.5.jl")
+end
 #=  Key constants. See also struct tb_event's key field.
  *
  * These are a safe subset of terminfo keys, which exist on all popular
@@ -127,56 +132,12 @@ const TB_BOLD =       0x0100
 const TB_UNDERLINE =  0x0200
 const TB_REVERSE =    0x0400
 const TB_ATTR = [0x0, TB_BOLD, TB_UNDERLINE, TB_REVERSE, TB_BOLD | TB_UNDERLINE]
-#=  A cell, single conceptual entity on the terminal screen. The terminal screen
- * is basically a 2d array of cells. It has the following fields:
- *  - 'ch' is a unicode character
- *  - 'fg' foreground color and attributes
- *  - 'bg' background color and attributes
-  =#
-#=struct tb_cell {
-	uint32_t ch;
-	uint16_t fg;
-	uint16_t bg;
-};=#
-export tb_cell
-type tb_cell
-  ch::Cuint
-  fg::Cushort
-  bg::Cushort
-  tb_cell() = new()
-end
+
 export TB_EVENT_KEY, TB_EVENT_RESIZE, TB_EVENT_MOUSE
 const TB_EVENT_KEY =     1
 const TB_EVENT_RESIZE =  2
 const TB_EVENT_MOUSE =   3
 
-#=  This struct represents a termbox event. The 'mod', 'key' and 'ch' fields are
- * valid if 'type' is TB_EVENT_KEY. The 'w' and 'h' fields are valid if 'type'
- * is TB_EVENT_RESIZE. The 'x' and 'y' fields are valid if 'type' is
- * TB_EVENT_MOUSE.
-  =#
-#=struct tb_event {
-  uint8_t type;
-  uint8_t mod;
-  uint16_t key;
-  uint32_t ch;
-  int32_t w;
-  int32_t h;
-  int32_t x;
-  int32_t y;
-  };=#
-export tb_event
-type tb_event
-  etype::Cuchar
-  mod::Cuchar
-  key::Cushort
-  ch::Cuint
-  w::Cint
-  h::Cint
-  x::Cint
-  y::Cint
-  tb_event() = new()
-end
 #=  Error codes returned by tb_init(). All of them are self-explanatory, except
  * the pipe trap error. Termbox uses unix pipes in order to deliver a message
  * from a signal handler (SIGWINCH) to the main event reading loop. Honestly in
@@ -318,14 +279,14 @@ tb_select_output_mode(mode) = ccall((:tb_select_output_mode, libtermbox), Cint,(
  * there were no event during 'timeout' period.
   =#
 export tb_peek_event
-tb_peek_event(event, timeout) = ccall((:tb_peek_event, libtermbox), Cint,(Ptr{tb_event},Cint), &event, timeout)
+tb_peek_event(event, timeout) = ccall((:tb_peek_event, libtermbox), Cint,(Ref{tb_event},Cint), event, timeout)
 
 #=  Wait for an event forever and fill the 'event' structure with it, when the
  * event is available. Returns the type of the event (one of TB_EVENT_*
  * constants) or -1 if there was an error.
   =#
 export tb_poll_event
-tb_poll_event(event) = ccall((:tb_poll_event, libtermbox), Cint,(Ptr{tb_event},), &event)
+tb_poll_event(event) = ccall((:tb_poll_event, libtermbox), Cint,(Ref{tb_event},), event)
 
 #=  Utility utf8 functions.  =#
 const TB_EOF =  -1
