@@ -98,21 +98,20 @@ function main()
   tb_shutdown()
   return 0
 end # main
-try
-  main()
-catch v
-  tb_shutdown()
-  Base.display_error(v, catch_backtrace())
-end
+main()
 
 end # module
 
 function demo_takeover()
   tb_init()
+  if ret != 0
+    @printf STDERR "tb_init() failed with error code %d\n" ret
+    return 1
+  end
   println("Taking over terminal...")
   println("Height: ", tb_height())
   println("Width: ", tb_width())
   sleep(2)
   tb_shutdown()
 end
-demo_takeover()
+# demo_takeover()
