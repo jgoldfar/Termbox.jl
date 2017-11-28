@@ -7,10 +7,11 @@ julia:
   - 0.4
   - 0.5
   - 0.6
+  - nightly
 
 matrix:
   allow_failures: 
-    - os: osx # OSX does not seem to agree with TB on a VM
+    - julia: nightly
 
 notifications:
   email: false
