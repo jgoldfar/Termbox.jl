@@ -5,12 +5,12 @@
  *  - 'bg' background color and attributes
   =#
 #=struct tb_cell {
-	uint32_t ch;
-	uint16_t fg;
-	uint16_t bg;
+  uint32_t ch;
+  uint16_t fg;
+  uint16_t bg;
 };=#
 export tb_cell
-struct tb_cell
+mutable struct tb_cell
   ch::Cuint
   fg::Cushort
   bg::Cushort
@@ -33,7 +33,7 @@ end
   int32_t y;
   };=#
 export tb_event
-struct tb_event
+mutable struct tb_event
   etype::Cuchar
   mod::Cuchar
   key::Cushort

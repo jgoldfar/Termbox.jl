@@ -279,7 +279,7 @@ tb_select_output_mode(mode) = ccall((:tb_select_output_mode, libtermbox), Cint,(
  * there were no event during 'timeout' period.
   =#
 export tb_peek_event
-tb_peek_event(event, timeout) = ccall((:tb_peek_event, libtermbox), Cint,(Ref{tb_event},Cint), event, timeout)
+tb_peek_event(event, timeout = 0) = ccall((:tb_peek_event, libtermbox), Cint,(Ref{tb_event},Cint), event, timeout)
 
 #=  Wait for an event forever and fill the 'event' structure with it, when the
  * event is available. Returns the type of the event (one of TB_EVENT_*
