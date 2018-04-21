@@ -65,12 +65,13 @@ function cellBuffer_test()
         rs = reshape(linearindices(CR), size(CR))
 
         CB = tb_cell_buffer()
+        if w>0 && h>0
+            prevcInd = rs[3, 3]
+            c1 = unsafe_load(CB, prevcInd)
+            print(Char(c1.ch))
 
-        prevcInd = rs[3, 3]
-        c1 = unsafe_load(CB, prevcInd)
-        print(Char(c1.ch))
-
-        tb_present()
+            tb_present()
+        end
         CB = C_NULL # tb_present invalidates the pointer.
         sleep(0.1)
     finally
