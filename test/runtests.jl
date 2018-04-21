@@ -59,7 +59,7 @@ function cellBuffer_test()
         w = tb_width()
         h = tb_height()
         # "Native" index set for terminal
-        CR = CartesianRange((1:h, 1:w))
+        CR = CartesianIndices((1:h, 1:w))
 
         # Linear version of above
         rs = reshape(linearindices(CR), size(CR))
@@ -83,10 +83,8 @@ end
 cellBuffer_test()
 #NOTE: tb_poll_event() may not be testable on CI
 
-if VERSION >= v"0.6-"
-    include("2048Example.jl")
-    CLI2048.main_wargames()
+include("2048Example.jl")
+CLI2048.main_wargames()
 
-    include("graphExample.jl")
-    UpdatingGraph.main()
-end
+include("graphExample.jl")
+UpdatingGraph.main()

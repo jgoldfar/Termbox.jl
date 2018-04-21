@@ -1,8 +1,4 @@
-@static if VERSION >= v"0.6-"
-  include("termbox_structs_v0.6.jl")
-else
-  include("termbox_structs_v0.5.jl")
-end
+include("termbox_structs.jl")
 #=  Key constants. See also struct tb_event's key field.
  *
  * These are a safe subset of terminfo keys, which exist on all popular
@@ -153,7 +149,7 @@ const TB_EPIPE_TRAP_ERROR =      -3
   =#
 export tb_init, tb_shutdown
 tb_init() = ccall((:tb_init, libtermbox), Cint,(),)
-tb_shutdown() = ccall((:tb_shutdown, libtermbox), Void,(),)
+tb_shutdown() = ccall((:tb_shutdown, libtermbox), Nothing,(),)
 
 #=  Returns the size of the internal back buffer (which is the same as
  * terminal's window size in characters). The internal buffer can be resized
@@ -169,12 +165,12 @@ tb_height() = ccall((:tb_height, libtermbox), Cint,(),)
  * color/attributes set by tb_set_clear_attributes() function.
   =#
 export tb_clear, tb_set_clear_attributes
-tb_clear() = ccall((:tb_clear, libtermbox), Void,(),)
-tb_set_clear_attributes(fg, bg) = ccall((:tb_set_clear_attributes, libtermbox), Void,(Cushort, Cushort), fg, bg)
+tb_clear() = ccall((:tb_clear, libtermbox), Nothing,(),)
+tb_set_clear_attributes(fg, bg) = ccall((:tb_set_clear_attributes, libtermbox), Nothing,(Cushort, Cushort), fg, bg)
 
 #=  Synchronizes the internal back buffer with the terminal.  =#
 export tb_present
-tb_present() = ccall((:tb_present, libtermbox), Void,(),)
+tb_present() = ccall((:tb_present, libtermbox), Nothing,(),)
 
 export TB_HIDE_CURSOR
 const TB_HIDE_CURSOR =  -1
@@ -184,14 +180,14 @@ const TB_HIDE_CURSOR =  -1
  * is hidden by default.
   =#
 export tb_set_cursor
-tb_set_cursor(cx, cy) = ccall((:tb_set_cursor, libtermbox), Void,(Cint, Cint), cx, cy)
+tb_set_cursor(cx, cy) = ccall((:tb_set_cursor, libtermbox), Nothing,(Cint, Cint), cx, cy)
 
 #=  Changes cell's parameters in the internal back buffer at the specified
  * position.
   =#
 export tb_put_cell, tb_change_cell
-tb_put_cell(x, y, cell) = ccall((:tb_put_cell, libtermbox), Void,(Cint, Cint, Ptr{tb_cell}), x, y, cell)
-tb_change_cell(x, y, ch, fg, bg) = ccall((:tb_change_cell, libtermbox), Void,(Cint, Cint, Cuint, Cushort, Cushort), x, y, ch, fg, bg)
+tb_put_cell(x, y, cell) = ccall((:tb_put_cell, libtermbox), Nothing,(Cint, Cint, Ptr{tb_cell}), x, y, cell)
+tb_change_cell(x, y, ch, fg, bg) = ccall((:tb_change_cell, libtermbox), Nothing,(Cint, Cint, Cuint, Cushort, Cushort), x, y, ch, fg, bg)
 
 
 #=  Copies the buffer from 'cells' at the specified position, assuming the
@@ -201,7 +197,7 @@ tb_change_cell(x, y, ch, fg, bg) = ccall((:tb_change_cell, libtermbox), Void,(Ci
  * (DEPRECATED: use tb_cell_buffer() instead and copy memory on your own)
   =#
 export tb_blit
-tb_blit(x, y, w, h, cells) = ccall((:tb_blit, libtermbox), Void,(Cint, Cint, Cint, Cint, Ptr{tb_cell}), x, y, w, h, cells)
+tb_blit(x, y, w, h, cells) = ccall((:tb_blit, libtermbox), Nothing,(Cint, Cint, Cint, Cint, Ptr{tb_cell}), x, y, w, h, cells)
 
 #=  Returns a pointer to internal cell back buffer. You can get its dimensions
  * using tb_width() and tb_height() functions. The pointer stays valid as long

@@ -3,9 +3,6 @@ module CLI2048
 
 using Termbox
 using Compat
-if VERSION < v"0.6-"
-    exit(0)
-end
 if VERSION >= v"0.7-"
     using Random
     using Printf
