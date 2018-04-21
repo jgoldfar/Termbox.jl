@@ -1,6 +1,7 @@
 # Termbox
 
 [![Build Status](https://travis-ci.org/jgoldfar/Termbox.jl.svg?branch=master)](https://travis-ci.org/jgoldfar/Termbox.jl)
+[![Coverage Status](https://coveralls.io/repos/github/jgoldfar/Termbox.jl/badge.svg?branch=master)](https://coveralls.io/github/jgoldfar/Termbox.jl?branch=master)
 
 ### What is this repository for? ###
 * This is a wrapper for [Termbox](https://github.com/nsf/termbox) in [Julia](http://julialang.org/).
