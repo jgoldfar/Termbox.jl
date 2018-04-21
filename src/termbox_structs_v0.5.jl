@@ -15,6 +15,7 @@ immutable tb_cell
   fg::Cushort
   bg::Cushort
   tb_cell() = new()
+  tb_cell(ch, fg=0x0001, bg=0x0001) = new(Cuint(ch), fg, bg)
 end
 
 #=  This struct represents a termbox event. The 'mod', 'key' and 'ch' fields are
