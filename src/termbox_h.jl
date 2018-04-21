@@ -201,7 +201,7 @@ tb_change_cell(x, y, ch, fg, bg) = ccall((:tb_change_cell, libtermbox), Void,(Ci
  * (DEPRECATED: use tb_cell_buffer() instead and copy memory on your own)
   =#
 export tb_blit
-tb_blit(x, y, w, h, cell) = ccall((:tb_blit, libtermbox), Void,(Cint, Cint, Cint, Cint, Ptr{tb_cell}), x, y, w, h, cells)
+tb_blit(x, y, w, h, cells) = ccall((:tb_blit, libtermbox), Void,(Cint, Cint, Cint, Cint, Ptr{tb_cell}), x, y, w, h, cells)
 
 #=  Returns a pointer to internal cell back buffer. You can get its dimensions
  * using tb_width() and tb_height() functions. The pointer stays valid as long
