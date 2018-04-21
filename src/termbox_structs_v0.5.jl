@@ -5,9 +5,9 @@
  *  - 'bg' background color and attributes
   =#
 #=struct tb_cell {
-	uint32_t ch;
-	uint16_t fg;
-	uint16_t bg;
+  uint32_t ch;
+  uint16_t fg;
+  uint16_t bg;
 };=#
 export tb_cell
 immutable tb_cell

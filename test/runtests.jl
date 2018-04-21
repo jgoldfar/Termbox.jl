@@ -9,8 +9,10 @@ end
 include("outputexample.jl")
 outputexample.main()
 
-include("2048Example.jl")
-CLI2048.main_wargames()
+if VERSION >= v"0.6-"
+    include("2048Example.jl")
+    CLI2048.main_wargames()
 
-include("graphExample.jl")
-UpdatingGraph.main()
+    include("graphExample.jl")
+    UpdatingGraph.main()
+end
