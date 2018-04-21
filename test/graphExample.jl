@@ -84,8 +84,8 @@ function main_loop_randomgraph(maxSteps::Integer = 200, numTrue = 15)
 end
 
 function main_loop(maxSteps::Integer = 200, numTrue = 15)
-    nc = tb_width()
-    nr = tb_height()
+    nc = max(2, tb_width())
+    nr = max(2, tb_height())
     g = falses(nr, nc)
     steps = 0
     tau = 1e-1
