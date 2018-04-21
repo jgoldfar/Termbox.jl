@@ -117,16 +117,44 @@ function putchar(k, i, c)
     tb_change_cell(k, i, c, 0x0001, 0x0000)
 end
 
-function tb_print(g::Grid)
+#TODO: Refactor interface below into boxes
+function tb_print(g::Grid, numWidth::Int = 4)
     tb_clear()
     n = size(g, 1)
+    rowCounter = 1
     for row in 1:n
-        numWidth = 4
-        for col in 1:n
-            for (i, c) in enumerate(sprint(show, g[row, col]))
-                putchar(col * (numWidth + 1) + i, row, c )
-            end
+        for i in 1:(n*(numWidth+4)+1)
+            putchar(i, rowCounter, '#')
         end
+        rowCounter += 1
+        colCounter = 1
+        for col in 1:n
+            putchar(colCounter, rowCounter, '#')
+            colCounter += 2 + numWidth + 2
+            putchar(colCounter, rowCounter, '#')
+        end
+        rowCounter += 1
+        colCounter = 1
+        for col in 1:n
+            colCounter += 2
+            for (i, c) in enumerate(rpad(sprint(show, g[row, col]), numWidth))
+                putchar(colCounter, rowCounter, c)
+                colCounter += 1
+            end
+            colCounter += 2
+            putchar(colCounter, rowCounter, '#')
+        end
+        rowCounter += 1
+        colCounter = 1
+        for col in 1:n
+            putchar(colCounter, rowCounter, '#')
+            colCounter += 2 + numWidth + 2
+            putchar(colCounter, rowCounter, '#')
+        end
+        rowCounter += 1
+    end
+    for i in 1:(n*(numWidth+4)+1)
+        putchar(i, rowCounter, '#')
     end
 end
 
@@ -262,3 +290,10 @@ end
 # println(v2)
 
 end # module
+
+# To use this interactively, run
+# julia -L 2048Example.jl -e 'CLI2048.main_interactive()'
+#
+# To see a game played randomly (and quickly), run
+# julia -L 2048Example.jl -e 'CLI2048.main_wargames()'
+# The latter command is suitable for iteration on the code itself.
