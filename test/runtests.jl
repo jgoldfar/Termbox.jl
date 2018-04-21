@@ -25,9 +25,11 @@ function misc_TB_tests()
         tb_set_cursor(TB_HIDE_CURSOR, TB_HIDE_CURSOR)
         tb_set_clear_attributes(0x0001, 0x0000)
 
-        e=tb_event()
+        e = tb_event()
         @test tb_peek_event(e, 1) == 0
         @show e
+        c = tb_cell()
+        @show c
     finally
         tb_shutdown()
     end
@@ -35,7 +37,50 @@ function misc_TB_tests()
 end
 misc_TB_tests()
 
-#TODO: add tests for tb_put_cell and tb_cell_buffer; tb_poll_event() may not be testable.
+function cellBuffer_test()
+    ret = tb_init()
+    if ret != 0
+        @printf stderr "tb_init() failed with error code %d\n" ret
+        return 1
+    end
+    c = tb_cell('r', 0x0002, 0x0001)
+    try
+        tb_select_input_mode(TB_INPUT_ESC)
+        tb_select_output_mode(TB_OUTPUT_NORMAL)
+
+        tb_set_clear_attributes(0x0001, 0x0000)
+        tb_clear()
+
+        tb_put_cell(3, 3, Ref(c))
+        tb_put_cell(3, 4, Ref(c))
+        tb_present()
+        sleep(0.1)
+
+        w = tb_width()
+        h = tb_height()
+        # "Native" index set for terminal
+        CR = CartesianRange((1:h, 1:w))
+
+        # Linear version of above
+        rs = reshape(linearindices(CR), size(CR))
+
+        CB = tb_cell_buffer()
+
+        prevcInd = rs[3, 3]
+        c1 = unsafe_load(CB, prevcInd)
+        print(Char(c1.ch))
+
+        tb_present()
+        CB = C_NULL # tb_present invalidates the pointer.
+        sleep(0.1)
+    finally
+        tb_shutdown()
+    end
+    # @show c
+    return nothing
+end
+cellBuffer_test()
+#NOTE: tb_poll_event() may not be testable on CI
 
 if VERSION >= v"0.6-"
     include("2048Example.jl")
