@@ -24,7 +24,7 @@ function tb_print(g::BitMatrix)
         for col in 1:m
             g[row, col] && putchar(col, row, '#')
         end
-    end    
+    end
     tb_present()
 end
 
@@ -98,7 +98,8 @@ function main_loop(maxSteps::Integer = 200, numTrue = 15)
                 g[row, col + 1] = false
             end
         end
-        g[floor(Int, (nr/2)*(sin(steps*tau) + 1))+1, nc] = true
+
+        g[clamp(round(Int, (nr/2)*(sin(steps*tau) + 1)), 1, nr), nc] = true
         tb_print(g)
         sleep(0.01)
         steps += 1
