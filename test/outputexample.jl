@@ -1,6 +1,11 @@
 # outputexample.jl
 module outputexample
 using Termbox
+using Compat
+@static if VERSION >= v"0.7-"
+    using Printf
+end
+
 const chars = "nnnnnnnnnbbbbbbbbbuuuuuuuuuBBBBBBBBB"
 const all_attrs = [0, TB_BOLD, TB_UNDERLINE, TB_BOLD | TB_UNDERLINE,]
 function next_char(current::Int)
@@ -80,7 +85,7 @@ end
 function main()
   ret = tb_init()
   if ret != 0
-    @printf STDERR "tb_init() failed with error code %d\n" ret
+    @printf stderr "tb_init() failed with error code %d\n" ret
     return 1
   end
 
@@ -98,14 +103,11 @@ function main()
   tb_shutdown()
   return 0
 end # main
-main()
-
-end # module
 
 function demo_takeover()
   tb_init()
   if ret != 0
-    @printf STDERR "tb_init() failed with error code %d\n" ret
+    @printf stderr "tb_init() failed with error code %d\n" ret
     return 1
   end
   println("Taking over terminal...")
@@ -114,4 +116,4 @@ function demo_takeover()
   sleep(2)
   tb_shutdown()
 end
-# demo_takeover()
+end # module
