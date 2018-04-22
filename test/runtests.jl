@@ -95,7 +95,7 @@ function test_interactive()
     sleep(2)
     try
         process_exited(p) || kill(p)
-        @show process_exited(p)
+        process_exited(p) || kill(p, SIGKILL)
     end
 end
 test_interactive()
