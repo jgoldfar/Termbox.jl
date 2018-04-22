@@ -82,29 +82,23 @@ function draw_all()
   end
   tb_present()
 end
-function main()
-  ret = tb_init()
-  if ret != 0
-    @printf stderr "tb_init() failed with error code %d\n" ret
-    return 1
-  end
-
-  draw_all()
-
-  sleep(1)
-  # ev = tb_event()
-  # while tb_poll_event(ev) != 0
-  #   (ev.etype == TB_EVENT_KEY && ev.key == TB_KEY_ESC) && break
-  #   if ev.etype == TB_EVENT_RESIZE
-  #     draw_all()
-  #   end #if
-  # end #while
-  tb_present()
-  tb_shutdown()
-  return 0
+function main(sleepTime = 1)
+    with_term() do
+        draw_all()
+        sleep(sleepTime)
+        # ev = tb_event()
+        # while tb_poll_event(ev) != 0
+        #   (ev.etype == TB_EVENT_KEY && ev.key == TB_KEY_ESC) && break
+        #   if ev.etype == TB_EVENT_RESIZE
+        #     draw_all()
+        #   end #if
+        # end #while
+        tb_present()
+        return 0
+    end
 end # main
 
-function demo_takeover()
+function demo_takeover(sleepTime = 1)
   tb_init()
   if ret != 0
     @printf stderr "tb_init() failed with error code %d\n" ret
@@ -113,7 +107,7 @@ function demo_takeover()
   println("Taking over terminal...")
   println("Height: ", tb_height())
   println("Width: ", tb_width())
-  sleep(2)
+  sleep(sleepTime)
   tb_shutdown()
 end
 end # module

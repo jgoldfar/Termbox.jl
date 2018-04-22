@@ -25,7 +25,7 @@ function tb_print(g::BitMatrix)
     tb_present()
 end
 
-function main_loop_random(maxSteps::Integer = 100, numTrue = 15)
+function main_loop_random(sleepTime = 1e-1, maxSteps::Integer = 100, numTrue = 15)
     g = falses(tb_width(), tb_height())
     g[shuffle(eachindex(g))[1:numTrue]] = true
     steps = 0
@@ -34,12 +34,12 @@ function main_loop_random(maxSteps::Integer = 100, numTrue = 15)
     while (steps < maxSteps)
         g[shuffle(eachindex(g))[1:numTrue]] = true
         tb_print(g)
-        sleep(0.01)
+        sleep(sleepTime)
         steps += 1
     end
 end
 
-function main_loop_waterfall(maxSteps::Integer = 100, numTrue = 15)
+function main_loop_waterfall(sleepTime = 1e-1, maxSteps::Integer = 100, numTrue = 15)
     nc = tb_width()
     nr = tb_height()
     g = falses(nr, nc)
@@ -54,12 +54,12 @@ function main_loop_waterfall(maxSteps::Integer = 100, numTrue = 15)
         end
         g[rand(1:nr), nc] = true
         tb_print(g)
-        sleep(0.01)
+        sleep(sleepTime)
         steps += 1
     end
 end
 
-function main_loop_randomgraph(maxSteps::Integer = 200, numTrue = 15)
+function main_loop_randomgraph(sleepTime = 1e-1, maxSteps::Integer = 200, numTrue = 15)
     nc = tb_width()
     nr = tb_height()
     g = falses(nr, nc)
@@ -75,12 +75,12 @@ function main_loop_randomgraph(maxSteps::Integer = 200, numTrue = 15)
         end
         g[rand(1:nr), nc] = true
         tb_print(g)
-        sleep(0.05)
+        sleep(sleepTime)
         steps += 1
     end
 end
 
-function main_loop(maxSteps::Integer = 200, numTrue = 15)
+function main_loop(sleepTime = 1e-1, maxSteps::Integer = 200, numTrue = 15)
     nc = max(2, tb_width())
     nr = max(2, tb_height())
     g = falses(nr, nc)
@@ -98,11 +98,11 @@ function main_loop(maxSteps::Integer = 200, numTrue = 15)
 
         g[clamp(round(Int, (nr/2)*(sin(steps*tau) + 1)), 1, nr), nc] = true
         tb_print(g)
-        sleep(0.01)
+        sleep(sleepTime)
         steps += 1
     end
 end
-function main()
+function main(sleepTime = 1e-1)
     ret = tb_init()
     if ret != 0
         @printf stderr "tb_init() failed with error code %d\n" ret
@@ -114,7 +114,7 @@ function main()
         tb_select_input_mode(TB_INPUT_ESC)
         tb_select_output_mode(TB_OUTPUT_NORMAL)
 
-        main_loop() # or main_loop_randomgraph, or main_loop_waterfall, or main_loop_random
+        main_loop(sleepTime) # or main_loop_randomgraph, or main_loop_waterfall, or main_loop_random
     finally
         tb_shutdown()
     end

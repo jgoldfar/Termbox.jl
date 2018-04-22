@@ -246,7 +246,7 @@ function main_interactive(boardSize::Int = 4)
     return 0
 end
 
-function main_wargames_loop(boardSize::Int = 4, maxMoves::Integer = 1000)
+function main_wargames_loop(sleepTime::Real = 0.05, boardSize::Int = 4, maxMoves::Integer = 1000)
     score = 0
     moves = 0
 
@@ -262,13 +262,13 @@ function main_wargames_loop(boardSize::Int = 4, maxMoves::Integer = 1000)
         score += scorediff
         tb_print(g)
         tb_present()
-        sleep(0.05)
+        sleep(sleepTime)
         moves += 1
     end
     score
 end
 
-function main_wargames(boardSize::Int = 4)
+function main_wargames(sleepTime::Real = 0.05, boardSize::Int = 4)
     ret = tb_init()
     if ret != 0
         @printf stderr "tb_init() failed with error code %d\n" ret
@@ -280,7 +280,7 @@ function main_wargames(boardSize::Int = 4)
         tb_select_input_mode(TB_INPUT_ESC)
         tb_select_output_mode(TB_OUTPUT_NORMAL)
 
-        score += main_wargames_loop(boardSize)
+        score += main_wargames_loop(sleepTime, boardSize)
     finally
         tb_shutdown()
     end

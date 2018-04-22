@@ -8,6 +8,6 @@ with_term() do
             end
         end
         tb_present()
-        sleep(0.2)
+        sleep(1e-2)
     end
 end

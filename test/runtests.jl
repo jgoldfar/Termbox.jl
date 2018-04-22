@@ -9,7 +9,7 @@ using Compat
 
 # write your own tests here
 include("outputexample.jl")
-outputexample.main()
+outputexample.main(1e-1)
 
 @test Termbox.tb_utf8_char_length(Char('r')) == 1
 
@@ -68,10 +68,12 @@ with_term() do
 end
 
 include("2048Example.jl")
-CLI2048.main_wargames()
+CLI2048.main_wargames(5e-3)
 
 include("graphExample.jl")
-UpdatingGraph.main()
+UpdatingGraph.main(5e-4)
+
+include("sugar.jl")
 
 function test_interactive()
     thisJulia = Base.JLOptions().julia_bin
