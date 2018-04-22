@@ -187,7 +187,7 @@ tb_set_cursor(cx, cy) = ccall((:tb_set_cursor, libtermbox), Nothing,(Cint, Cint)
   =#
 export tb_put_cell, tb_change_cell
 tb_put_cell(x, y, cell) = ccall((:tb_put_cell, libtermbox), Nothing,(Cint, Cint, Ptr{tb_cell}), x, y, cell)
-tb_change_cell(x, y, ch, fg, bg) = ccall((:tb_change_cell, libtermbox), Nothing,(Cint, Cint, Cuint, Cushort, Cushort), x, y, ch, fg, bg)
+tb_change_cell(x, y, ch, fg = 0x0001, bg = 0x0000) = ccall((:tb_change_cell, libtermbox), Nothing,(Cint, Cint, Cuint, Cushort, Cushort), x, y, ch, fg, bg)
 
 
 #=  Copies the buffer from 'cells' at the specified position, assuming the
