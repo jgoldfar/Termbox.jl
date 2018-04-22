@@ -34,7 +34,7 @@ function misc_TB_tests()
         tb_shutdown()
     end
     
-    @test Termbox.tb_utf8_char_length(Char('r'))
+    @test Termbox.tb_utf8_char_length(Char('r')) == 1
     return nothing
 end
 misc_TB_tests()
