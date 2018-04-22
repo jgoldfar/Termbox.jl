@@ -81,10 +81,21 @@ function cellBuffer_test()
     return nothing
 end
 cellBuffer_test()
-#NOTE: tb_poll_event() may not be testable on CI
 
 include("2048Example.jl")
 CLI2048.main_wargames()
 
 include("graphExample.jl")
 UpdatingGraph.main()
+
+function test_interactive()
+    thisJulia = Base.JLOptions().julia_bin
+    CLIFile=joinpath(dirname(@__FILE__), "2048Example.jl")
+    p = open(`$(unsafe_string(thisJulia)) --code-coverage=user -L $(CLIFile) -e 'CLI2048.main_interactive()'`)
+    sleep(2)
+    try
+        process_exited(p) || kill(p)
+        @show process_exited(p)
+    end
+end
+test_interactive()

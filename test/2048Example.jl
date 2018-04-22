@@ -160,7 +160,12 @@ function handle_char!(c, g)
         fill!(g, 0)
         randomGrid!(g)
         tb_clear()
+        return true
     end
+    if c == Int('q')
+        return false
+    end
+    return true
 end
 function handle_key!(k, g)
     scorediff = Ref(0)
@@ -200,7 +205,10 @@ function main_interactive_loop(boardSize::Int = 4)
                     do_loop = false
                     break
                 elseif ev.key == 0
-                    handle_char!(ev.ch, g)
+                    if !(handle_char!(ev.ch, g))
+                        do_loop = false
+                        break
+                    end
                 else
                     scorediff = handle_key!(ev.key, g)
                     if scorediff < 0
