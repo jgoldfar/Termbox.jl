@@ -10,6 +10,11 @@ julia:
   - 0.7
   - nightly
 
+matrix:
+  fast_finish: true
+  allow_failures:
+    - julia: nightly
+
 ## uncomment the following lines to override the default test script
 #script:
 #  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
