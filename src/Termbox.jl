@@ -8,7 +8,7 @@ else
   error("Termbox not properly installed. Please run Pkg.build(\"Termbox\")")
 end
 
-using Compat
+using Compat: Nothing
 include("termbox_h.jl")
 
 @static if VERSION >= v"0.7-"
