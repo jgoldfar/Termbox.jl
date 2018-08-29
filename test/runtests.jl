@@ -51,7 +51,7 @@ with_term() do
     CR = CartesianIndices((1:h, 1:w))
 
     # Linear version of above
-    rs = reshape(linearindices(CR), size(CR))
+    rs = reshape(LinearIndices(CR), size(CR))
 
     CB = tb_cell_buffer()
     if w>0 && h>0
