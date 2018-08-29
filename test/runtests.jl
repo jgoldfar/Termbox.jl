@@ -78,7 +78,7 @@ include("sugar.jl")
 function test_interactive()
     thisJulia = Base.JLOptions().julia_bin
     CLIFile=joinpath(dirname(@__FILE__), "2048Example.jl")
-    p = open(`$(unsafe_string(thisJulia)) --code-coverage=user -L $(CLIFile) -e 'CLI2048.main_interactive()'`)
+    s, p = open(`$(unsafe_string(thisJulia)) --code-coverage=user -L $(CLIFile) -e 'CLI2048.main_interactive()'`)
     sleep(2)
     try
         process_exited(p) || kill(p)
